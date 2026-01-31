@@ -2,9 +2,10 @@ import torch
 import torch.nn as nn
 import torch.fft as fft
 
+
 def dct2(x, norm="ortho"):
     """
-    Compute the Discrete Cosine Transform (DCT) Type II of the input tensor.
+    Compute the Discrete Cosine Transform (DCT) Type II of the input tensor along its last dimension.
     
     Args:
         x (torch.Tensor): Input tensor of shape (..., N).
@@ -32,9 +33,10 @@ def dct2(x, norm="ortho"):
     output_signals = 2 * final_signal_list.view(*x_shape)
     return output_signals
 
+
 def idct2(x, norm="ortho"):
     """
-    Compute the Inverse Discrete Cosine Transform (DCT) Type II of the input tensor.
+    Compute the Inverse Discrete Cosine Transform (IDCT) for DCT-II of the input tensor along its last dimension.
     
     Args:
         x (torch.Tensor): Input tensor of shape (..., N).
@@ -66,3 +68,46 @@ def idct2(x, norm="ortho"):
     output_signal[:, 1::2] = output_signals_shuffled[:, even_signal_length:].flip([1])
     output_signal = output_signal.view(*x_shape)
     return output_signal
+
+
+def dct2_2d(x, norm=None):
+    """
+    Compute the Discrete Cosine Transform (DCT) Type II of a two-dimensional input tensor.
+    
+    Args:
+        x (torch.Tensor): Input tensor of shape (..., N).
+        norm (str, optional): Normalization mode. Default is "ortho".
+        
+    Returns:
+        torch.Tensor: Inverse DCT Type II transformed two-dimensional tensor of the same shape as input.
+    """
+    X1 = dct2(x, norm=norm)
+    X2 = dct2(X1.transpose(-1, -2), norm=norm)
+    return X2.transpose(-1, -2)
+
+
+
+
+def idct_2d(X, norm=None):
+    """
+    Compute the Inverse Discrete Cosine Transform (IDCT) for DCT-II of a two-dimensional input tensor.
+    
+    Args:
+        x (torch.Tensor): Input tensor of shape (..., N).
+        norm (str, optional): Normalization mode. Default is "ortho".
+        
+    Returns:
+        torch.Tensor: Inverse DCT Type II transformed two-dimensional tensor of the same shape as input.
+    """
+    x1 = idct2(X, norm=norm)
+    x2 = idct2(x1.transpose(-1, -2), norm=norm)
+    return x2.transpose(-1, -2)
+
+
+
+
+class LinearDCT(nn.linear):
+    """
+    Docstring for LinearDCT
+    """
+    pass
