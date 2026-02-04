@@ -1,1 +1,1 @@
-from spectral._dct_type_ii_suite import dct2, idct2, dct2_2d, idct_2d
+from spectral._dct_type_ii_suite import dct2, idct2, dct2_2d, idct_2d, LinearDCT, DCTSpectralPooling
