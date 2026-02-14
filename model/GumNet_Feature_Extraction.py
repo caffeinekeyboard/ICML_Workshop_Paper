@@ -1,2 +1,0 @@
-import spectral
-print(spectral._dct_type_ii_suite.DCTSpectralPooling.__doc__)

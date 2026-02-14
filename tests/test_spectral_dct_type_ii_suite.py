@@ -2,6 +2,7 @@ import torch
 import pytest
 import numpy as np
 from torch.autograd import gradcheck
+
 from spectral import dct2, idct2, dct2_2d, idct2_2d, LinearDCT, DCTSpectralPooling
 
 # -----------------------------------------------------------------------------
