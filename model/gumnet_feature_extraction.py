@@ -37,8 +37,8 @@ class GumNetFeatureExtraction(nn.Module):
         >>> feature_extractor = GumNetFeatureExtraction(in_channels=1)
         >>> image_a = torch.randn(8, 1, 192, 192) # Batch of 8 images
         >>> image_b = torch.randn(8, 1, 192, 192) # Batch of 8 paired images
-        >>> features_a = feature_extractor(image_a)
-        >>> features_b = feature_extractor(image_b)
+        >>> features_a = feature_extractor(image_a, branch='Sa')
+        >>> features_b = feature_extractor(image_b, branch='Sb')
         >>> print(features_a.shape)
         torch.Size([8, 512, 14, 14])
     """
@@ -49,69 +49,101 @@ class GumNetFeatureExtraction(nn.Module):
         
         # Block 1: 192x192 -> Conv(32-3x3-1-'valid') -> 190x190 -> DCTSpectralPooling(85x85) -> 100x100
         self.shared_conv1 = nn.Conv2d(in_channels, 32, kernel_size=3, stride=1, padding=0)
-        self.bn1 = nn.BatchNorm2d(32)
+        self.bn1_sa = nn.BatchNorm2d(32)
+        self.bn1_sb = nn.BatchNorm2d(32)
         self.pool1 = DCTSpectralPooling(in_height=190, in_width=190, 
                                         freq_h=85, freq_w=85, 
                                         out_height=100, out_width=100)
         
         # Block 2: 100x100 -> Conv(64-3x3-1-'valid') -> 98x98 -> DCTSpectralPooling(42x42) -> 50x50
         self.shared_conv2 = nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=0)
-        self.bn2 = nn.BatchNorm2d(64)
+        self.bn2_sa = nn.BatchNorm2d(64)
+        self.bn2_sb = nn.BatchNorm2d(64)
         self.pool2 = DCTSpectralPooling(in_height=98, in_width=98, 
                                         freq_h=42, freq_w=42, 
                                         out_height=50, out_width=50)
         
         # Block 3: 50x50 -> Conv(128-3x3-1-'valid') -> 48x48 -> DCTSpectralPooling(21x21) -> 25x25
         self.shared_conv3 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=0)
-        self.bn3 = nn.BatchNorm2d(128)
+        self.bn3_sa = nn.BatchNorm2d(128)
+        self.bn3_sb = nn.BatchNorm2d(128)
         self.pool3 = DCTSpectralPooling(in_height=48, in_width=48, 
                                         freq_h=21, freq_w=21, 
                                         out_height=25, out_width=25)
         
         # Block 4: 25x25 -> Conv(256-3x3-1-'valid') -> 23x23 -> DCTSpectralPooling(14x14) -> 16x16
         self.shared_conv4 = nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=0)
-        self.bn4 = nn.BatchNorm2d(256)
+        self.bn4_sa = nn.BatchNorm2d(256)
+        self.bn4_sb = nn.BatchNorm2d(256)
         self.pool4 = DCTSpectralPooling(in_height=23, in_width=23, 
                                         freq_h=14, freq_w=14, 
                                         out_height=16, out_width=16)
         
         # Block 5: 16x16 -> Conv(512-3x3-1-'valid') -> 14x14
         self.shared_conv5 = nn.Conv2d(256, 512, kernel_size=3, stride=1, padding=0)
-        self.bn5 = nn.BatchNorm2d(512)
+        self.bn5_sa = nn.BatchNorm2d(512)
+        self.bn5_sb = nn.BatchNorm2d(512)
         
         # L2 Normalization before Correlation
         self.l2_norm = FeatureL2Norm()
 
 
-    def forward(self, x):
+    def forward(self, x, branch):
+        """
+        Forward pass through the GumNet feature extraction module.
+
+        Args:
+            x (torch.Tensor): Input image tensor of shape `(B, C, H, W)`.
+            branch (str): Either 'Sa' or 'Sb', indicating which branch of the network to use.
+
+        Returns:
+            torch.Tensor: Output feature map tensor of shape `(B, 512, 14, 14)`.
+        """
             
         # --- BLOCK 1 ---
         x = self.shared_conv1(x)               # [B, 32, 190, 190]
         x = F.relu(x)
-        x = self.bn1(x)
+        if branch == 'Sa':
+            x = self.bn1_sa(x)
+        elif branch == 'Sb':
+            x = self.bn1_sb(x)
+        else:
+            raise ValueError("branch must be 'Sa' or 'Sb'")
         x = self.pool1(x)                      # [B, 32, 100, 100]
         
         # --- BLOCK 2 ---
         x = self.shared_conv2(x)               # [B, 64, 98, 98]
         x = F.relu(x)
-        x = self.bn2(x)
+        if branch == 'Sa':
+            x = self.bn2_sa(x)
+        elif branch == 'Sb':
+            x = self.bn2_sb(x)
         x = self.pool2(x)                      # [B, 64, 50, 50]
         
         # --- BLOCK 3 ---
         x = self.shared_conv3(x)               # [B, 128, 48, 48]
         x = F.relu(x)
-        x = self.bn3(x)
+        if branch == 'Sa':
+            x = self.bn3_sa(x)
+        elif branch == 'Sb':
+            x = self.bn3_sb(x)
         x = self.pool3(x)                      # [B, 128, 25, 25]
         
         # --- BLOCK 4 ---
         x = self.shared_conv4(x)               # [B, 256, 23, 23]
         x = F.relu(x)
-        x = self.bn4(x)
+        if branch == 'Sa':
+            x = self.bn4_sa(x)
+        elif branch == 'Sb':
+            x = self.bn4_sb(x)
         x = self.pool4(x)                      # [B, 256, 16, 16]
         
         # --- BLOCK 5 ---
         x = self.shared_conv5(x)               # [B, 512, 14, 14]
-        x = self.bn5(x)
+        if branch == 'Sa':
+            x = self.bn5_sa(x)
+        elif branch == 'Sb':
+            x = self.bn5_sb(x)
         x = self.l2_norm(x)                    # [B, 512, 14, 14]
         
         return x
