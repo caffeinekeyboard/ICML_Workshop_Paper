@@ -1,7 +1,6 @@
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from model.feature_l2_norm import FeatureL2Norm
+from model.layers.feature_l2_norm import FeatureL2Norm
 from spectral import DCTSpectralPooling
 
 class GumNetFeatureExtraction(nn.Module):
@@ -48,40 +47,40 @@ class GumNetFeatureExtraction(nn.Module):
     def __init__(self, in_channels=1):
         super(GumNetFeatureExtraction, self).__init__()
         
-        # Block 1: 192x192 -> Conv(32-3x3-1) -> 190x190 -> DCTSpectralPooling(85x85) -> 100x100
+        # Block 1: 192x192 -> Conv(32-3x3-1-'valid') -> 190x190 -> DCTSpectralPooling(85x85) -> 100x100
         self.shared_conv1 = nn.Conv2d(in_channels, 32, kernel_size=3, stride=1, padding=0)
         self.bn1 = nn.BatchNorm2d(32)
         self.pool1 = DCTSpectralPooling(in_height=190, in_width=190, 
                                         freq_h=85, freq_w=85, 
                                         out_height=100, out_width=100)
         
-        # Block 2: 100x100 -> Conv(64-3x3-1) -> 98x98 -> DCTSpectralPooling(42x42) -> 50x50
+        # Block 2: 100x100 -> Conv(64-3x3-1-'valid') -> 98x98 -> DCTSpectralPooling(42x42) -> 50x50
         self.shared_conv2 = nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=0)
         self.bn2 = nn.BatchNorm2d(64)
         self.pool2 = DCTSpectralPooling(in_height=98, in_width=98, 
                                         freq_h=42, freq_w=42, 
                                         out_height=50, out_width=50)
         
-        # Block 3: 50x50 -> Conv(128-3x3-1) -> 48x48 -> DCTSpectralPooling(21x21) -> 25x25
+        # Block 3: 50x50 -> Conv(128-3x3-1-'valid') -> 48x48 -> DCTSpectralPooling(21x21) -> 25x25
         self.shared_conv3 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=0)
         self.bn3 = nn.BatchNorm2d(128)
         self.pool3 = DCTSpectralPooling(in_height=48, in_width=48, 
                                         freq_h=21, freq_w=21, 
                                         out_height=25, out_width=25)
         
-        # Block 4: 25x25 -> Conv(256-3x3-1) -> 23x23 -> DCTSpectralPooling(14x14) -> 16x16
+        # Block 4: 25x25 -> Conv(256-3x3-1-'valid') -> 23x23 -> DCTSpectralPooling(14x14) -> 16x16
         self.shared_conv4 = nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=0)
         self.bn4 = nn.BatchNorm2d(256)
         self.pool4 = DCTSpectralPooling(in_height=23, in_width=23, 
                                         freq_h=14, freq_w=14, 
                                         out_height=16, out_width=16)
         
-        # Block 5: 16x16 -> Conv(512-3x3-1) -> 14x14
+        # Block 5: 16x16 -> Conv(512-3x3-1-'valid') -> 14x14
         self.shared_conv5 = nn.Conv2d(256, 512, kernel_size=3, stride=1, padding=0)
         self.bn5 = nn.BatchNorm2d(512)
         
         # L2 Normalization before Correlation
-        self.l2_norm = FeatureL2Norm(dim=1)
+        self.l2_norm = FeatureL2Norm()
 
 
     def forward(self, x):
