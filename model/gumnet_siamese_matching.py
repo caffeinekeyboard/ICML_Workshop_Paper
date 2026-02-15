@@ -57,6 +57,7 @@ class GumNetSiameseMatching(nn.Module):
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
             
+            # Flatten: (B, 1024, 10, 10) -> (B, 102400)
             nn.Flatten()
         )
         self.regression_block_ba = nn.Sequential(
@@ -71,6 +72,7 @@ class GumNetSiameseMatching(nn.Module):
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
             
+            # Flatten: (B, 1024, 10, 10) -> (B, 102400)
             nn.Flatten()
         )
         self.l2_norm = FeatureL2Norm()
