@@ -4,128 +4,128 @@ GUMNET 2D ARCHITECTURE SUMMARY
 =======================================================================================================================================
 Layer (type (var_name))                                 Input Shape          Output Shape         Param #              Trainable
 =======================================================================================================================================
-GumNet (GumNet)                                         [2, 1, 192, 192]     [2, 1, 192, 192]     --                   Partial
-├─GumNetFeatureExtraction (feature_extractor)           [2, 1, 192, 192]     [2, 512, 14, 14]     1,984                Partial
-│    └─Conv2d (shared_conv1)                            [2, 1, 192, 192]     [2, 32, 190, 190]    320                  True
-│    └─BatchNorm2d (bn1_sa)                             [2, 32, 190, 190]    [2, 32, 190, 190]    64                   True
-│    └─DCTSpectralPooling (pool1)                       [2, 32, 190, 190]    [2, 32, 100, 100]    --                   False
-│    │    └─LinearDCT (dct_w)                           [2, 32, 190, 190]    [2, 32, 190, 190]    (36,100)             False
-│    │    └─LinearDCT (dct_h)                           [2, 32, 190, 190]    [2, 32, 190, 190]    (36,100)             False
-│    │    └─LinearDCT (idct_h)                          [2, 32, 100, 100]    [2, 32, 100, 100]    (10,000)             False
-│    │    └─LinearDCT (idct_w)                          [2, 32, 100, 100]    [2, 32, 100, 100]    (10,000)             False
-│    └─Conv2d (shared_conv2)                            [2, 32, 100, 100]    [2, 64, 98, 98]      18,496               True
-│    └─BatchNorm2d (bn2_sa)                             [2, 64, 98, 98]      [2, 64, 98, 98]      128                  True
-│    └─DCTSpectralPooling (pool2)                       [2, 64, 98, 98]      [2, 64, 50, 50]      --                   False
-│    │    └─LinearDCT (dct_w)                           [2, 64, 98, 98]      [2, 64, 98, 98]      (9,604)              False
-│    │    └─LinearDCT (dct_h)                           [2, 64, 98, 98]      [2, 64, 98, 98]      (9,604)              False
-│    │    └─LinearDCT (idct_h)                          [2, 64, 50, 50]      [2, 64, 50, 50]      (2,500)              False
-│    │    └─LinearDCT (idct_w)                          [2, 64, 50, 50]      [2, 64, 50, 50]      (2,500)              False
-│    └─Conv2d (shared_conv3)                            [2, 64, 50, 50]      [2, 128, 48, 48]     73,856               True
-│    └─BatchNorm2d (bn3_sa)                             [2, 128, 48, 48]     [2, 128, 48, 48]     256                  True
-│    └─DCTSpectralPooling (pool3)                       [2, 128, 48, 48]     [2, 128, 25, 25]     --                   False
-│    │    └─LinearDCT (dct_w)                           [2, 128, 48, 48]     [2, 128, 48, 48]     (2,304)              False
-│    │    └─LinearDCT (dct_h)                           [2, 128, 48, 48]     [2, 128, 48, 48]     (2,304)              False
-│    │    └─LinearDCT (idct_h)                          [2, 128, 25, 25]     [2, 128, 25, 25]     (625)                False
-│    │    └─LinearDCT (idct_w)                          [2, 128, 25, 25]     [2, 128, 25, 25]     (625)                False
-│    └─Conv2d (shared_conv4)                            [2, 128, 25, 25]     [2, 256, 23, 23]     295,168              True
-│    └─BatchNorm2d (bn4_sa)                             [2, 256, 23, 23]     [2, 256, 23, 23]     512                  True
-│    └─DCTSpectralPooling (pool4)                       [2, 256, 23, 23]     [2, 256, 16, 16]     --                   False
-│    │    └─LinearDCT (dct_w)                           [2, 256, 23, 23]     [2, 256, 23, 23]     (529)                False
-│    │    └─LinearDCT (dct_h)                           [2, 256, 23, 23]     [2, 256, 23, 23]     (529)                False
-│    │    └─LinearDCT (idct_h)                          [2, 256, 16, 16]     [2, 256, 16, 16]     (256)                False
-│    │    └─LinearDCT (idct_w)                          [2, 256, 16, 16]     [2, 256, 16, 16]     (256)                False
-│    └─Conv2d (shared_conv5)                            [2, 256, 16, 16]     [2, 512, 14, 14]     1,180,160            True
-│    └─BatchNorm2d (bn5_sa)                             [2, 512, 14, 14]     [2, 512, 14, 14]     1,024                True
-│    └─FeatureL2Norm (l2_norm)                          [2, 512, 14, 14]     [2, 512, 14, 14]     --                   --
-├─GumNetFeatureExtraction (feature_extractor)           [2, 1, 192, 192]     [2, 512, 14, 14]     (recursive)          Partial
-│    └─Conv2d (shared_conv1)                            [2, 1, 192, 192]     [2, 32, 190, 190]    (recursive)          True
-│    └─BatchNorm2d (bn1_sb)                             [2, 32, 190, 190]    [2, 32, 190, 190]    64                   True
-│    └─DCTSpectralPooling (pool1)                       [2, 32, 190, 190]    [2, 32, 100, 100]    (recursive)          False
-│    │    └─LinearDCT (dct_w)                           [2, 32, 190, 190]    [2, 32, 190, 190]    (recursive)          False
-│    │    └─LinearDCT (dct_h)                           [2, 32, 190, 190]    [2, 32, 190, 190]    (recursive)          False
-│    │    └─LinearDCT (idct_h)                          [2, 32, 100, 100]    [2, 32, 100, 100]    (recursive)          False
-│    │    └─LinearDCT (idct_w)                          [2, 32, 100, 100]    [2, 32, 100, 100]    (recursive)          False
-│    └─Conv2d (shared_conv2)                            [2, 32, 100, 100]    [2, 64, 98, 98]      (recursive)          True
-│    └─BatchNorm2d (bn2_sb)                             [2, 64, 98, 98]      [2, 64, 98, 98]      128                  True
-│    └─DCTSpectralPooling (pool2)                       [2, 64, 98, 98]      [2, 64, 50, 50]      (recursive)          False
-│    │    └─LinearDCT (dct_w)                           [2, 64, 98, 98]      [2, 64, 98, 98]      (recursive)          False
-│    │    └─LinearDCT (dct_h)                           [2, 64, 98, 98]      [2, 64, 98, 98]      (recursive)          False
-│    │    └─LinearDCT (idct_h)                          [2, 64, 50, 50]      [2, 64, 50, 50]      (recursive)          False
-│    │    └─LinearDCT (idct_w)                          [2, 64, 50, 50]      [2, 64, 50, 50]      (recursive)          False
-│    └─Conv2d (shared_conv3)                            [2, 64, 50, 50]      [2, 128, 48, 48]     (recursive)          True
-│    └─BatchNorm2d (bn3_sb)                             [2, 128, 48, 48]     [2, 128, 48, 48]     256                  True
-│    └─DCTSpectralPooling (pool3)                       [2, 128, 48, 48]     [2, 128, 25, 25]     (recursive)          False
-│    │    └─LinearDCT (dct_w)                           [2, 128, 48, 48]     [2, 128, 48, 48]     (recursive)          False
-│    │    └─LinearDCT (dct_h)                           [2, 128, 48, 48]     [2, 128, 48, 48]     (recursive)          False
-│    │    └─LinearDCT (idct_h)                          [2, 128, 25, 25]     [2, 128, 25, 25]     (recursive)          False
-│    │    └─LinearDCT (idct_w)                          [2, 128, 25, 25]     [2, 128, 25, 25]     (recursive)          False
-│    └─Conv2d (shared_conv4)                            [2, 128, 25, 25]     [2, 256, 23, 23]     (recursive)          True
-│    └─BatchNorm2d (bn4_sb)                             [2, 256, 23, 23]     [2, 256, 23, 23]     512                  True
-│    └─DCTSpectralPooling (pool4)                       [2, 256, 23, 23]     [2, 256, 16, 16]     (recursive)          False
-│    │    └─LinearDCT (dct_w)                           [2, 256, 23, 23]     [2, 256, 23, 23]     (recursive)          False
-│    │    └─LinearDCT (dct_h)                           [2, 256, 23, 23]     [2, 256, 23, 23]     (recursive)          False
-│    │    └─LinearDCT (idct_h)                          [2, 256, 16, 16]     [2, 256, 16, 16]     (recursive)          False
-│    │    └─LinearDCT (idct_w)                          [2, 256, 16, 16]     [2, 256, 16, 16]     (recursive)          False
-│    └─Conv2d (shared_conv5)                            [2, 256, 16, 16]     [2, 512, 14, 14]     (recursive)          True
-│    └─BatchNorm2d (bn5_sb)                             [2, 512, 14, 14]     [2, 512, 14, 14]     1,024                True
-│    └─FeatureL2Norm (l2_norm)                          [2, 512, 14, 14]     [2, 512, 14, 14]     --                   --
-├─GumNetSiameseMatching (siamese_matcher)               [2, 512, 14, 14]     [2, 4096]            --                   True
-│    └─FeatureCorrelation2D (correlation_layer)         [2, 512, 14, 14]     [2, 196, 14, 14]     --                   --
-│    └─FeatureL2Norm (l2_norm)                          [2, 196, 14, 14]     [2, 196, 14, 14]     --                   --
-│    └─Sequential (regression_block_ab)                 [2, 196, 14, 14]     [2, 4096]            --                   True
-│    │    └─Conv2d (0)                                  [2, 196, 14, 14]     [2, 1024, 12, 12]    1,807,360            True
-│    │    └─BatchNorm2d (1)                             [2, 1024, 12, 12]    [2, 1024, 12, 12]    2,048                True
-│    │    └─ReLU (2)                                    [2, 1024, 12, 12]    [2, 1024, 12, 12]    --                   --
-│    │    └─Conv2d (3)                                  [2, 1024, 12, 12]    [2, 1024, 10, 10]    9,438,208            True
-│    │    └─BatchNorm2d (4)                             [2, 1024, 10, 10]    [2, 1024, 10, 10]    2,048                True
-│    │    └─ReLU (5)                                    [2, 1024, 10, 10]    [2, 1024, 10, 10]    --                   --
-│    │    └─Conv2d (6)                                  [2, 1024, 10, 10]    [2, 1024, 8, 8]      9,438,208            True
-│    │    └─BatchNorm2d (7)                             [2, 1024, 8, 8]      [2, 1024, 8, 8]      2,048                True
-│    │    └─ReLU (8)                                    [2, 1024, 8, 8]      [2, 1024, 8, 8]      --                   --
-│    │    └─Conv2d (9)                                  [2, 1024, 8, 8]      [2, 1024, 6, 6]      9,438,208            True
-│    │    └─BatchNorm2d (10)                            [2, 1024, 6, 6]      [2, 1024, 6, 6]      2,048                True
-│    │    └─ReLU (11)                                   [2, 1024, 6, 6]      [2, 1024, 6, 6]      --                   --
-│    │    └─Conv2d (12)                                 [2, 1024, 6, 6]      [2, 1024, 4, 4]      9,438,208            True
-│    │    └─BatchNorm2d (13)                            [2, 1024, 4, 4]      [2, 1024, 4, 4]      2,048                True
-│    │    └─ReLU (14)                                   [2, 1024, 4, 4]      [2, 1024, 4, 4]      --                   --
-│    │    └─Conv2d (15)                                 [2, 1024, 4, 4]      [2, 1024, 2, 2]      9,438,208            True
-│    │    └─BatchNorm2d (16)                            [2, 1024, 2, 2]      [2, 1024, 2, 2]      2,048                True
-│    │    └─ReLU (17)                                   [2, 1024, 2, 2]      [2, 1024, 2, 2]      --                   --
-│    │    └─Flatten (18)                                [2, 1024, 2, 2]      [2, 4096]            --                   --
-│    └─FeatureCorrelation2D (correlation_layer)         [2, 512, 14, 14]     [2, 196, 14, 14]     --                   --
-│    └─FeatureL2Norm (l2_norm)                          [2, 196, 14, 14]     [2, 196, 14, 14]     --                   --
-│    └─Sequential (regression_block_ba)                 [2, 196, 14, 14]     [2, 4096]            --                   True
-│    │    └─Conv2d (0)                                  [2, 196, 14, 14]     [2, 1024, 12, 12]    1,807,360            True
-│    │    └─BatchNorm2d (1)                             [2, 1024, 12, 12]    [2, 1024, 12, 12]    2,048                True
-│    │    └─ReLU (2)                                    [2, 1024, 12, 12]    [2, 1024, 12, 12]    --                   --
-│    │    └─Conv2d (3)                                  [2, 1024, 12, 12]    [2, 1024, 10, 10]    9,438,208            True
-│    │    └─BatchNorm2d (4)                             [2, 1024, 10, 10]    [2, 1024, 10, 10]    2,048                True
-│    │    └─ReLU (5)                                    [2, 1024, 10, 10]    [2, 1024, 10, 10]    --                   --
-│    │    └─Conv2d (6)                                  [2, 1024, 10, 10]    [2, 1024, 8, 8]      9,438,208            True
-│    │    └─BatchNorm2d (7)                             [2, 1024, 8, 8]      [2, 1024, 8, 8]      2,048                True
-│    │    └─ReLU (8)                                    [2, 1024, 8, 8]      [2, 1024, 8, 8]      --                   --
-│    │    └─Conv2d (9)                                  [2, 1024, 8, 8]      [2, 1024, 6, 6]      9,438,208            True
-│    │    └─BatchNorm2d (10)                            [2, 1024, 6, 6]      [2, 1024, 6, 6]      2,048                True
-│    │    └─ReLU (11)                                   [2, 1024, 6, 6]      [2, 1024, 6, 6]      --                   --
-│    │    └─Conv2d (12)                                 [2, 1024, 6, 6]      [2, 1024, 4, 4]      9,438,208            True
-│    │    └─BatchNorm2d (13)                            [2, 1024, 4, 4]      [2, 1024, 4, 4]      2,048                True
-│    │    └─ReLU (14)                                   [2, 1024, 4, 4]      [2, 1024, 4, 4]      --                   --
-│    │    └─Conv2d (15)                                 [2, 1024, 4, 4]      [2, 1024, 2, 2]      9,438,208            True
-│    │    └─BatchNorm2d (16)                            [2, 1024, 2, 2]      [2, 1024, 2, 2]      2,048                True
-│    │    └─ReLU (17)                                   [2, 1024, 2, 2]      [2, 1024, 2, 2]      --                   --
-│    │    └─Flatten (18)                                [2, 1024, 2, 2]      [2, 4096]            --                   --
-├─GumNetSpatialAlignment (spatial_aligner)              [2, 4096]            [2, 1, 192, 192]     --                   True
-│    └─Linear (fc1)                                     [2, 8192]            [2, 2000]            16,386,000           True
-│    └─Linear (fc2)                                     [2, 2000]            [2, 2000]            4,002,000            True
-│    └─Linear (fc_out)                                  [2, 2000]            [2, 3]               6,003                True
+GumNet (GumNet)                                         [16, 1, 192, 192]    [16, 1, 192, 192]    --                   Partial
+├─GumNetFeatureExtraction (feature_extractor)           [16, 1, 192, 192]    [16, 512, 14, 14]    1,984                Partial
+│    └─Conv2d (shared_conv1)                            [16, 1, 192, 192]    [16, 32, 190, 190]   320                  True
+│    └─BatchNorm2d (bn1_sa)                             [16, 32, 190, 190]   [16, 32, 190, 190]   64                   True
+│    └─DCTSpectralPooling (pool1)                       [16, 32, 190, 190]   [16, 32, 100, 100]   --                   False
+│    │    └─LinearDCT (dct_w)                           [16, 32, 190, 190]   [16, 32, 190, 190]   (36,100)             False
+│    │    └─LinearDCT (dct_h)                           [16, 32, 190, 190]   [16, 32, 190, 190]   (36,100)             False
+│    │    └─LinearDCT (idct_h)                          [16, 32, 100, 100]   [16, 32, 100, 100]   (10,000)             False
+│    │    └─LinearDCT (idct_w)                          [16, 32, 100, 100]   [16, 32, 100, 100]   (10,000)             False
+│    └─Conv2d (shared_conv2)                            [16, 32, 100, 100]   [16, 64, 98, 98]     18,496               True
+│    └─BatchNorm2d (bn2_sa)                             [16, 64, 98, 98]     [16, 64, 98, 98]     128                  True
+│    └─DCTSpectralPooling (pool2)                       [16, 64, 98, 98]     [16, 64, 50, 50]     --                   False
+│    │    └─LinearDCT (dct_w)                           [16, 64, 98, 98]     [16, 64, 98, 98]     (9,604)              False
+│    │    └─LinearDCT (dct_h)                           [16, 64, 98, 98]     [16, 64, 98, 98]     (9,604)              False
+│    │    └─LinearDCT (idct_h)                          [16, 64, 50, 50]     [16, 64, 50, 50]     (2,500)              False
+│    │    └─LinearDCT (idct_w)                          [16, 64, 50, 50]     [16, 64, 50, 50]     (2,500)              False
+│    └─Conv2d (shared_conv3)                            [16, 64, 50, 50]     [16, 128, 48, 48]    73,856               True
+│    └─BatchNorm2d (bn3_sa)                             [16, 128, 48, 48]    [16, 128, 48, 48]    256                  True
+│    └─DCTSpectralPooling (pool3)                       [16, 128, 48, 48]    [16, 128, 25, 25]    --                   False
+│    │    └─LinearDCT (dct_w)                           [16, 128, 48, 48]    [16, 128, 48, 48]    (2,304)              False
+│    │    └─LinearDCT (dct_h)                           [16, 128, 48, 48]    [16, 128, 48, 48]    (2,304)              False
+│    │    └─LinearDCT (idct_h)                          [16, 128, 25, 25]    [16, 128, 25, 25]    (625)                False
+│    │    └─LinearDCT (idct_w)                          [16, 128, 25, 25]    [16, 128, 25, 25]    (625)                False
+│    └─Conv2d (shared_conv4)                            [16, 128, 25, 25]    [16, 256, 23, 23]    295,168              True
+│    └─BatchNorm2d (bn4_sa)                             [16, 256, 23, 23]    [16, 256, 23, 23]    512                  True
+│    └─DCTSpectralPooling (pool4)                       [16, 256, 23, 23]    [16, 256, 16, 16]    --                   False
+│    │    └─LinearDCT (dct_w)                           [16, 256, 23, 23]    [16, 256, 23, 23]    (529)                False
+│    │    └─LinearDCT (dct_h)                           [16, 256, 23, 23]    [16, 256, 23, 23]    (529)                False
+│    │    └─LinearDCT (idct_h)                          [16, 256, 16, 16]    [16, 256, 16, 16]    (256)                False
+│    │    └─LinearDCT (idct_w)                          [16, 256, 16, 16]    [16, 256, 16, 16]    (256)                False
+│    └─Conv2d (shared_conv5)                            [16, 256, 16, 16]    [16, 512, 14, 14]    1,180,160            True
+│    └─BatchNorm2d (bn5_sa)                             [16, 512, 14, 14]    [16, 512, 14, 14]    1,024                True
+│    └─FeatureL2Norm (l2_norm)                          [16, 512, 14, 14]    [16, 512, 14, 14]    --                   --
+├─GumNetFeatureExtraction (feature_extractor)           [16, 1, 192, 192]    [16, 512, 14, 14]    (recursive)          Partial
+│    └─Conv2d (shared_conv1)                            [16, 1, 192, 192]    [16, 32, 190, 190]   (recursive)          True
+│    └─BatchNorm2d (bn1_sb)                             [16, 32, 190, 190]   [16, 32, 190, 190]   64                   True
+│    └─DCTSpectralPooling (pool1)                       [16, 32, 190, 190]   [16, 32, 100, 100]   (recursive)          False
+│    │    └─LinearDCT (dct_w)                           [16, 32, 190, 190]   [16, 32, 190, 190]   (recursive)          False
+│    │    └─LinearDCT (dct_h)                           [16, 32, 190, 190]   [16, 32, 190, 190]   (recursive)          False
+│    │    └─LinearDCT (idct_h)                          [16, 32, 100, 100]   [16, 32, 100, 100]   (recursive)          False
+│    │    └─LinearDCT (idct_w)                          [16, 32, 100, 100]   [16, 32, 100, 100]   (recursive)          False
+│    └─Conv2d (shared_conv2)                            [16, 32, 100, 100]   [16, 64, 98, 98]     (recursive)          True
+│    └─BatchNorm2d (bn2_sb)                             [16, 64, 98, 98]     [16, 64, 98, 98]     128                  True
+│    └─DCTSpectralPooling (pool2)                       [16, 64, 98, 98]     [16, 64, 50, 50]     (recursive)          False
+│    │    └─LinearDCT (dct_w)                           [16, 64, 98, 98]     [16, 64, 98, 98]     (recursive)          False
+│    │    └─LinearDCT (dct_h)                           [16, 64, 98, 98]     [16, 64, 98, 98]     (recursive)          False
+│    │    └─LinearDCT (idct_h)                          [16, 64, 50, 50]     [16, 64, 50, 50]     (recursive)          False
+│    │    └─LinearDCT (idct_w)                          [16, 64, 50, 50]     [16, 64, 50, 50]     (recursive)          False
+│    └─Conv2d (shared_conv3)                            [16, 64, 50, 50]     [16, 128, 48, 48]    (recursive)          True
+│    └─BatchNorm2d (bn3_sb)                             [16, 128, 48, 48]    [16, 128, 48, 48]    256                  True
+│    └─DCTSpectralPooling (pool3)                       [16, 128, 48, 48]    [16, 128, 25, 25]    (recursive)          False
+│    │    └─LinearDCT (dct_w)                           [16, 128, 48, 48]    [16, 128, 48, 48]    (recursive)          False
+│    │    └─LinearDCT (dct_h)                           [16, 128, 48, 48]    [16, 128, 48, 48]    (recursive)          False
+│    │    └─LinearDCT (idct_h)                          [16, 128, 25, 25]    [16, 128, 25, 25]    (recursive)          False
+│    │    └─LinearDCT (idct_w)                          [16, 128, 25, 25]    [16, 128, 25, 25]    (recursive)          False
+│    └─Conv2d (shared_conv4)                            [16, 128, 25, 25]    [16, 256, 23, 23]    (recursive)          True
+│    └─BatchNorm2d (bn4_sb)                             [16, 256, 23, 23]    [16, 256, 23, 23]    512                  True
+│    └─DCTSpectralPooling (pool4)                       [16, 256, 23, 23]    [16, 256, 16, 16]    (recursive)          False
+│    │    └─LinearDCT (dct_w)                           [16, 256, 23, 23]    [16, 256, 23, 23]    (recursive)          False
+│    │    └─LinearDCT (dct_h)                           [16, 256, 23, 23]    [16, 256, 23, 23]    (recursive)          False
+│    │    └─LinearDCT (idct_h)                          [16, 256, 16, 16]    [16, 256, 16, 16]    (recursive)          False
+│    │    └─LinearDCT (idct_w)                          [16, 256, 16, 16]    [16, 256, 16, 16]    (recursive)          False
+│    └─Conv2d (shared_conv5)                            [16, 256, 16, 16]    [16, 512, 14, 14]    (recursive)          True
+│    └─BatchNorm2d (bn5_sb)                             [16, 512, 14, 14]    [16, 512, 14, 14]    1,024                True
+│    └─FeatureL2Norm (l2_norm)                          [16, 512, 14, 14]    [16, 512, 14, 14]    --                   --
+├─GumNetSiameseMatching (siamese_matcher)               [16, 512, 14, 14]    [16, 4096]           --                   True
+│    └─FeatureCorrelation2D (correlation_layer)         [16, 512, 14, 14]    [16, 196, 14, 14]    --                   --
+│    └─FeatureL2Norm (l2_norm)                          [16, 196, 14, 14]    [16, 196, 14, 14]    --                   --
+│    └─Sequential (regression_block_ab)                 [16, 196, 14, 14]    [16, 4096]           --                   True
+│    │    └─Conv2d (0)                                  [16, 196, 14, 14]    [16, 1024, 12, 12]   1,807,360            True
+│    │    └─BatchNorm2d (1)                             [16, 1024, 12, 12]   [16, 1024, 12, 12]   2,048                True
+│    │    └─ReLU (2)                                    [16, 1024, 12, 12]   [16, 1024, 12, 12]   --                   --
+│    │    └─Conv2d (3)                                  [16, 1024, 12, 12]   [16, 1024, 10, 10]   9,438,208            True
+│    │    └─BatchNorm2d (4)                             [16, 1024, 10, 10]   [16, 1024, 10, 10]   2,048                True
+│    │    └─ReLU (5)                                    [16, 1024, 10, 10]   [16, 1024, 10, 10]   --                   --
+│    │    └─Conv2d (6)                                  [16, 1024, 10, 10]   [16, 1024, 8, 8]     9,438,208            True
+│    │    └─BatchNorm2d (7)                             [16, 1024, 8, 8]     [16, 1024, 8, 8]     2,048                True
+│    │    └─ReLU (8)                                    [16, 1024, 8, 8]     [16, 1024, 8, 8]     --                   --
+│    │    └─Conv2d (9)                                  [16, 1024, 8, 8]     [16, 1024, 6, 6]     9,438,208            True
+│    │    └─BatchNorm2d (10)                            [16, 1024, 6, 6]     [16, 1024, 6, 6]     2,048                True
+│    │    └─ReLU (11)                                   [16, 1024, 6, 6]     [16, 1024, 6, 6]     --                   --
+│    │    └─Conv2d (12)                                 [16, 1024, 6, 6]     [16, 1024, 4, 4]     9,438,208            True
+│    │    └─BatchNorm2d (13)                            [16, 1024, 4, 4]     [16, 1024, 4, 4]     2,048                True
+│    │    └─ReLU (14)                                   [16, 1024, 4, 4]     [16, 1024, 4, 4]     --                   --
+│    │    └─Conv2d (15)                                 [16, 1024, 4, 4]     [16, 1024, 2, 2]     9,438,208            True
+│    │    └─BatchNorm2d (16)                            [16, 1024, 2, 2]     [16, 1024, 2, 2]     2,048                True
+│    │    └─ReLU (17)                                   [16, 1024, 2, 2]     [16, 1024, 2, 2]     --                   --
+│    │    └─Flatten (18)                                [16, 1024, 2, 2]     [16, 4096]           --                   --
+│    └─FeatureCorrelation2D (correlation_layer)         [16, 512, 14, 14]    [16, 196, 14, 14]    --                   --
+│    └─FeatureL2Norm (l2_norm)                          [16, 196, 14, 14]    [16, 196, 14, 14]    --                   --
+│    └─Sequential (regression_block_ba)                 [16, 196, 14, 14]    [16, 4096]           --                   True
+│    │    └─Conv2d (0)                                  [16, 196, 14, 14]    [16, 1024, 12, 12]   1,807,360            True
+│    │    └─BatchNorm2d (1)                             [16, 1024, 12, 12]   [16, 1024, 12, 12]   2,048                True
+│    │    └─ReLU (2)                                    [16, 1024, 12, 12]   [16, 1024, 12, 12]   --                   --
+│    │    └─Conv2d (3)                                  [16, 1024, 12, 12]   [16, 1024, 10, 10]   9,438,208            True
+│    │    └─BatchNorm2d (4)                             [16, 1024, 10, 10]   [16, 1024, 10, 10]   2,048                True
+│    │    └─ReLU (5)                                    [16, 1024, 10, 10]   [16, 1024, 10, 10]   --                   --
+│    │    └─Conv2d (6)                                  [16, 1024, 10, 10]   [16, 1024, 8, 8]     9,438,208            True
+│    │    └─BatchNorm2d (7)                             [16, 1024, 8, 8]     [16, 1024, 8, 8]     2,048                True
+│    │    └─ReLU (8)                                    [16, 1024, 8, 8]     [16, 1024, 8, 8]     --                   --
+│    │    └─Conv2d (9)                                  [16, 1024, 8, 8]     [16, 1024, 6, 6]     9,438,208            True
+│    │    └─BatchNorm2d (10)                            [16, 1024, 6, 6]     [16, 1024, 6, 6]     2,048                True
+│    │    └─ReLU (11)                                   [16, 1024, 6, 6]     [16, 1024, 6, 6]     --                   --
+│    │    └─Conv2d (12)                                 [16, 1024, 6, 6]     [16, 1024, 4, 4]     9,438,208            True
+│    │    └─BatchNorm2d (13)                            [16, 1024, 4, 4]     [16, 1024, 4, 4]     2,048                True
+│    │    └─ReLU (14)                                   [16, 1024, 4, 4]     [16, 1024, 4, 4]     --                   --
+│    │    └─Conv2d (15)                                 [16, 1024, 4, 4]     [16, 1024, 2, 2]     9,438,208            True
+│    │    └─BatchNorm2d (16)                            [16, 1024, 2, 2]     [16, 1024, 2, 2]     2,048                True
+│    │    └─ReLU (17)                                   [16, 1024, 2, 2]     [16, 1024, 2, 2]     --                   --
+│    │    └─Flatten (18)                                [16, 1024, 2, 2]     [16, 4096]           --                   --
+├─GumNetSpatialAlignment (spatial_aligner)              [16, 4096]           [16, 1, 192, 192]    --                   True
+│    └─Linear (fc1)                                     [16, 8192]           [16, 2000]           16,386,000           True
+│    └─Linear (fc2)                                     [16, 2000]           [16, 2000]           4,002,000            True
+│    └─Linear (fc_out)                                  [16, 2000]           [16, 3]              6,003                True
 =======================================================================================================================================
 Total params: 120,113,167
 Trainable params: 119,989,331
 Non-trainable params: 123,836
-Total mult-adds (G): 12.38
+Total mult-adds (G): 99.00
 =======================================================================================================================================
-Input size (MB): 0.59
-Forward/backward pass size (MB): 352.00
+Input size (MB): 4.72
+Forward/backward pass size (MB): 2816.00
 Params size (MB): 480.44
-Estimated Total Size (MB): 833.04
+Estimated Total Size (MB): 3301.17
 =======================================================================================================================================

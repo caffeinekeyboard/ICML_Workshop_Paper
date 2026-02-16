@@ -3,7 +3,7 @@ from torchinfo import summary
 from model.gumnet import GumNet
 
 model = GumNet()
-input_shapes = [(2, 1, 192, 192), (2, 1, 192, 192)]
+input_shapes = [(16, 1, 192, 192), (16, 1, 192, 192)]
 print("\n" + "="*50)
 print("GUMNET 2D ARCHITECTURE SUMMARY")
 print("="*50)
