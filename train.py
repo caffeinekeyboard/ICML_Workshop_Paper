@@ -17,7 +17,7 @@ def parse_args():
     parser.add_argument('--save_dir', type=str, default='./checkpoints', help="Directory to save model checkpoints")
     parser.add_argument('--batch_size', type=int, default=16, help="Training batch size")
     parser.add_argument('--epochs', type=int, default=100, help="Number of training epochs")
-    parser.add_argument('--lr', type=float, default=1e-7, help="Initial learning rate")
+    parser.add_argument('--lr', type=float, default=1e-4, help="Initial learning rate")
     parser.add_argument('--num_workers', type=int, default=4, help="Number of dataloader workers")
     parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu', help="Device to train on")
     return parser.parse_args()
@@ -89,7 +89,7 @@ def main():
     criterion = PearsonCorrelationLoss(eps=1e-8).to(args.device)
     optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-5)
     
-    scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5)
+    scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=2)
     
     best_val_loss = float('inf')
     history = {
