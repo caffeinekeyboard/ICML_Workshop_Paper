@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class GumNetSpatialAlignment(nn.Module):
+class GumNetSpatialAlignmentMP(nn.Module):
     """
     Core 2D Transformation Regression and Spatial Warping Module for the GumNetMP architecture.
 
@@ -48,7 +48,7 @@ class GumNetSpatialAlignment(nn.Module):
         torch.Size([8, 2, 3])
     """
     def __init__(self, input_dim=100352):
-        super(GumNetSpatialAlignment, self).__init__()
+        super(GumNetSpatialAlignmentMP, self).__init__()
         
         # Fully Connected Layer 1: [B, 100352] -> [B, 2000]
         self.fc1 = nn.Linear(input_dim, 2000)
