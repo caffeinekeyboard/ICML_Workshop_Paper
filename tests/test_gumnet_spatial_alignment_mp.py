@@ -137,7 +137,7 @@ def test_device_agnosticism(dummy_data):
         pytest.fail(f"Model failed to execute after being moved to device {device}. Error: {e}")
 
 def test_variable_batch_sizes(regressor):
-    single_corr_dim = 4096
+    single_corr_dim = 50176
     batch_1_cab = torch.randn(1, single_corr_dim)
     batch_1_cba = torch.randn(1, single_corr_dim)
     batch_1_img = torch.randn(1, 1, 192, 192)
