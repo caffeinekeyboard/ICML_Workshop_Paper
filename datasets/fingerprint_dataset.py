@@ -38,8 +38,8 @@ class FingerprintGumNetDataset(Dataset):
         ])
         self.impression_transform = impression_transform if impression_transform else transforms.Compose([
             transforms.Grayscale(num_output_channels=1),
-            transforms.RandomAffine(degrees=affine_degrees, translate=(affine_translate, affine_translate), fill=255),
             transforms.Pad(padding=(62, 0, 63, 0), fill=255),
+            transforms.RandomAffine(degrees=affine_degrees, translate=(affine_translate, affine_translate), fill=255),
             transforms.Resize((192, 192)),
             transforms.RandomInvert(p=1.0),
             transforms.ToTensor(),

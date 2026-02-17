@@ -22,8 +22,8 @@ def split_dataset(finger_type, noise_level):
     random.seed(42) 
     random.shuffle(all_files)
     train_files = all_files[:1500]
-    test_files = all_files[1500:2000]
-    val_files = all_files[2000:2100]
+    val_files = all_files[1500:2000]
+    test_files = all_files[2000:2100]
 
     def copy_files(file_list, destination_dir, set_name):
         print(f"Copying {len(file_list)} files to {set_name}...")
