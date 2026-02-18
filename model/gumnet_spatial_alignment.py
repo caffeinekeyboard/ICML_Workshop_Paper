@@ -113,6 +113,6 @@ class GumNetSpatialAlignment(nn.Module):
         
         # Apply Spatial Transformer
         grid = F.affine_grid(affine_matrix, source_image.size(), align_corners=False)
-        warped_image = F.grid_sample(source_image, grid, mode='bilinear', padding_mode='zeros', align_corners=False)
+        warped_image = F.grid_sample(source_image, grid, mode='bilinear', padding_mode='border', align_corners=False)
         
         return warped_image, affine_matrix

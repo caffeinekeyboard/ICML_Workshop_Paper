@@ -30,20 +30,15 @@ class FingerprintGumNetDataset(Dataset):
         self.split = split
         self.template_transform = transforms.Compose([
             transforms.Grayscale(num_output_channels=1),
-            transforms.Pad(padding=(62, 0, 63, 0), fill=255),
             transforms.Resize((192, 192)),
             transforms.RandomInvert(p=1.0),
             transforms.ToTensor(),
-            transforms.Normalize(mean=[0.5], std=[0.5]) 
         ])
         self.impression_transform = impression_transform if impression_transform else transforms.Compose([
             transforms.Grayscale(num_output_channels=1),
-            transforms.Pad(padding=(62, 0, 63, 0), fill=255),
-            transforms.RandomAffine(degrees=affine_degrees, translate=(affine_translate, affine_translate), fill=255),
             transforms.Resize((192, 192)),
             transforms.RandomInvert(p=1.0),
             transforms.ToTensor(),
-            transforms.Normalize(mean=[0.5], std=[0.5]) 
         ])
         self.pairs = []
         self._build_dataset(noise_levels)
@@ -99,13 +94,14 @@ class FingerprintGumNetDataset(Dataset):
 
 
 
-def get_dataloaders(data_root: str, batch_size: int = 16, num_workers: int = 4):
+def get_dataloaders(data_root: str, batch_size: int = 16, num_workers: int = 4, noise_levels: Optional[List[str]] = None):
     """
     Instantiates the Train, Val, and Test dataloaders.
     """
-    train_dataset = FingerprintGumNetDataset(root_dir=data_root, split='train')
-    val_dataset = FingerprintGumNetDataset(root_dir=data_root, split='val')
-    test_dataset = FingerprintGumNetDataset(root_dir=data_root, split='test')
+    train_dataset = FingerprintGumNetDataset(root_dir=data_root, split='train', noise_levels=noise_levels)
+    val_dataset = FingerprintGumNetDataset(root_dir=data_root, split='val', noise_levels=noise_levels)
+    test_dataset = FingerprintGumNetDataset(root_dir=data_root, split='test', noise_levels=noise_levels)
+
     train_loader = DataLoader(train_dataset, 
                               batch_size=batch_size, 
                               shuffle=True, 

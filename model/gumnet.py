@@ -1,7 +1,7 @@
 import torch.nn as nn
 from model.gumnet_feature_extraction import GumNetFeatureExtraction
 from model.gumnet_siamese_matching import GumNetSiameseMatching
-from model.gumnet_spatial_alignment import GumNetSpatialAlignment
+from model.gumnet_non_linear_alignment import GumNetNonLinearAlignment
 
 class GumNet(nn.Module):
     """
@@ -33,7 +33,7 @@ class GumNet(nn.Module):
 
         self.feature_extractor = GumNetFeatureExtraction(in_channels=in_channels)
         self.siamese_matcher = GumNetSiameseMatching()
-        self.spatial_aligner = GumNetSpatialAlignment()
+        self.spatial_aligner = GumNetNonLinearAlignment()
 
     def forward(self, template, impression):
         """
