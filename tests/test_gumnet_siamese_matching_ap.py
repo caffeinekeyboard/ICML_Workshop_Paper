@@ -1,7 +1,7 @@
 import torch
 import pytest
 
-from model.gumnet_siamese_matching_ap import GumNetSiameseMatchingAP
+from model.alternate.gumnet_siamese_matching_ap import GumNetSiameseMatchingAP
 
 # -----------------------------------------------------------------------------
 # GLOBAL CONFIG & FIXTURES

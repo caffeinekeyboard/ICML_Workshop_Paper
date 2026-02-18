@@ -1,7 +1,7 @@
 import torch
 import pytest
 
-from model.gumnet_spatial_alignment_mp import GumNetSpatialAlignmentMP
+from model.alternate.gumnet_spatial_alignment_mp import GumNetSpatialAlignmentMP
 
 # -----------------------------------------------------------------------------
 # GLOBAL CONFIG & FIXTURES

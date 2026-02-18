@@ -1,7 +1,7 @@
 import torch.nn as nn
-from model.gumnet_feature_extraction_ap import GumNetFeatureExtractionAP
-from model.gumnet_siamese_matching_ap import GumNetSiameseMatchingAP
-from model.gumnet_spatial_alignment_ap import GumNetSpatialAlignmentAP
+from model.alternate.gumnet_feature_extraction_ap import GumNetFeatureExtractionAP
+from model.alternate.gumnet_siamese_matching_ap import GumNetSiameseMatchingAP
+from model.alternate.gumnet_spatial_alignment_ap import GumNetSpatialAlignmentAP
 
 class GumNetAP(nn.Module):
     """

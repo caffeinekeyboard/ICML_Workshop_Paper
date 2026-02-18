@@ -1,7 +1,7 @@
 import torch
 import pytest
 
-from model.gumnet_feature_extraction_mp import GumNetFeatureExtractionMP
+from model.alternate.gumnet_feature_extraction_mp import GumNetFeatureExtractionMP
 
 # -----------------------------------------------------------------------------
 # GLOBAL CONFIG & FIXTURES
