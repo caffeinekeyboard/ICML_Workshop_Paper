@@ -2,9 +2,9 @@ import torch.nn as nn
 from model.layers.feature_correlation_2d import FeatureCorrelation2D
 from model.layers.feature_l2_norm import FeatureL2Norm
 
-class GumNetSiameseMatchingMP(nn.Module):
+class GumNetSiameseMatchingAP(nn.Module):
     """
-    Siamese Feature Correlation and Regression Module for the 2D GumNetMP architecture.
+    Siamese Feature Correlation and Regression Module for the 2D GumNetAP architecture.
 
     Args:
         in_channels (int, optional): Flattened spatial dimension of the input feature maps (H * W = 19 * 19 = 361).
@@ -34,7 +34,7 @@ class GumNetSiameseMatchingMP(nn.Module):
             - Same operations as AB, but with strictly independent weights -> (B, 50176)
 
     Examples:
-        >>> siamese_matcher = GumNetSiameseMatchingMP(in_channels=361, out_channels=1024)
+        >>> siamese_matcher = GumNetSiameseMatchingAP(in_channels=361, out_channels=1024)
         >>> v_a = torch.randn(4, 512, 19, 19) # Batch of 4 template feature maps
         >>> v_b = torch.randn(4, 512, 19, 19) # Batch of 4 impression feature maps
         >>> out_ab, out_ba = siamese_matcher(v_a, v_b)
@@ -44,7 +44,7 @@ class GumNetSiameseMatchingMP(nn.Module):
     def __init__(self, in_channels: int = 361, out_channels: int = 1024):
         """
         """
-        super(GumNetSiameseMatchingMP, self).__init__()
+        super(GumNetSiameseMatchingAP, self).__init__()
         
         self.correlation_layer = FeatureCorrelation2D()
         self.regression_block_ab = nn.Sequential(
