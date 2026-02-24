@@ -4,3 +4,5 @@ deprecated_model.zip
 /data.zip
 /checkpoints
 fingernet.pth
+gumnet_2d_best_noise_level_0_8x8_200.pth
+__pycache__/

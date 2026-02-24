@@ -1,15 +1,25 @@
-import nbis
-from nbis import NbisExtractorSettings
 import os
+import sys
+from pathlib import Path
+
+# Ensure project root is on sys.path when running this file directly
+_SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
+_PROJECT_ROOT = os.path.abspath(os.path.join(_SCRIPT_DIR, '..'))
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
 import torchvision.transforms as transforms
-from nbis_extractor import Nbis
+from matching.nbis_extractor import Nbis
 import torch
 import numpy as np
 import cv2
+import torch.nn.functional as F
+
+from utils.crop_resize import crop_resize_horizontal
+from model.gumnet import GumNet
 
 
 # Resolve paths relative to this script so the script works from any CWD
-_SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 _IMAGE_PATH = os.path.abspath(
     os.path.join(
         _SCRIPT_DIR,
@@ -23,16 +33,27 @@ _IMAGE_PATH = os.path.abspath(
     )
 )
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DATA_ROOT = Path(
+    "/home/marius/Asus/CVPR_Workshop/ICML_Workshop_Paper/data/FCV/FVC2004/Dbs/DB1_A"
+)
+WEIGHTS_PATH = PROJECT_ROOT / "model" / "gumnet_2d_best_noise_level_0_8x8_200.pth"
 
 _TRANSFORM = transforms.Compose([
-    #transforms.Grayscale(num_output_channels=1),
-    transforms.Pad(padding=(62, 0, 63, 0), fill=255),
-    transforms.Resize((192, 192)),
-    #transforms.RandomInvert(p=1.0),
+    transforms.Grayscale(num_output_channels=1),
+    transforms.Pad(padding=(80, 0, 80, 0), fill=255),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.5], std=[0.5]),
 ])
 
+_TRANSFORM_GUMNET = transforms.Compose([
+    transforms.Grayscale(num_output_channels=1),
+    transforms.Pad(padding=(80, 0, 80, 0), fill=255),
+    transforms.Resize((192, 192)),
+    transforms.RandomInvert(p=1.0),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.5], std=[0.5]),
+])
 
 def _load_single_image_tensor() -> "torch.Tensor":
 
@@ -40,7 +61,44 @@ def _load_single_image_tensor() -> "torch.Tensor":
 
     im = Image.open(_IMAGE_PATH).convert("L")
     im_tensor = _TRANSFORM(im).unsqueeze(0) # type: ignore
-    return im_tensor
+    im_tesnor_gumnet = _TRANSFORM_GUMNET(im).unsqueeze(0) # type: ignore
+    #im_tensor = crop_resize_horizontal(im_tensor, output_size=(640, 480))
+
+    model = GumNet(grid_size=8)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.load_state_dict(WEIGHTS_PATH, map_location=device, strict=True)
+    model.to(device)
+    model.eval()
+
+    _, control_points = model(im_tesnor_gumnet.to(device), im_tesnor_gumnet.to(device)) # type: ignore
+    
+    dense_flow = F.interpolate(
+            control_points, 
+            size=(640, 640), 
+            mode='bicubic', 
+            align_corners=True
+        )           
+    
+    dense_flow = dense_flow.permute(0, 2, 3, 1)
+
+    y, x = torch.meshgrid(
+            torch.linspace(-1.0, 1.0, 640, device=device),
+            torch.linspace(-1.0, 1.0, 640, device=device),
+            indexing='ij'
+        )
+    
+    base_grid = torch.stack([x, y], dim=-1)
+    deformation_grid = base_grid + dense_flow
+
+    warped_image = F.grid_sample(
+        im_tensor, 
+        deformation_grid, 
+        mode='bilinear', 
+        padding_mode='border', 
+        align_corners=True
+    )
+
+    return warped_image
 
 
 def _save_minutiae_visualization(
@@ -54,6 +112,9 @@ def _save_minutiae_visualization(
     """
     Save the original image with detected minutiae points (NBIS).
     """
+    if original_image.requires_grad:
+        original_image = original_image.detach()
+
     if original_image.ndim == 4:
         img = original_image[0, 0].cpu().numpy()
     elif original_image.ndim == 3:
@@ -125,7 +186,7 @@ def test_single_image():
     print("NBIS single-image extraction ran successfully")
 
 
-def test_batch_images(batch_size: int = 8):
+def test_batch_images(batch_size: int = 800):
 
     im_tensor = _load_single_image_tensor().repeat(batch_size, 1, 1, 1)
     extractor = Nbis()

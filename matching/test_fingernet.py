@@ -5,7 +5,15 @@ from PIL import Image
 import torchvision.transforms as transforms
 from fingernet import FingerNet
 from fingernet_wrapper import FingerNetWrapper
-from torchsummary import summary
+import sys
+
+# Ensure project root is on sys.path when running this file directly
+_SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
+_PROJECT_ROOT = os.path.abspath(os.path.join(_SCRIPT_DIR, '..'))
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
+from utils.crop_resize import crop_resize_horizontal
 
 
 # Resolve paths relative to this script so the script works from any CWD
@@ -27,7 +35,7 @@ _MODEL_PATH = os.path.abspath(os.path.join(_SCRIPT_DIR, 'fingernet.pth'))
 _TRANSFORM = transforms.Compose([
     transforms.Grayscale(num_output_channels=1),
     transforms.Pad(padding=(62, 0, 63, 0), fill=255),
-    transforms.Resize((192, 192)),
+    #transforms.Resize((192, 192)),
     transforms.RandomInvert(p=1.0),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.5], std=[0.5]),
@@ -37,6 +45,8 @@ im = Image.open(_IMAGE_PATH).convert("L")
 
 # Convert image to tensor, apply transforms, and add batch dimension
 im_tensor = _TRANSFORM(im).unsqueeze(0)  # type: ignore # Shape: (1, 1, H, W)
+im_tensor = -im_tensor
+im_tensor = crop_resize_horizontal(im_tensor, output_size=(640, 480))
 
 def _pad_to_multiple(x: torch.Tensor, multiple: int = 8) -> torch.Tensor:
     _, _, h, w = x.shape
@@ -77,7 +87,7 @@ def test2():
 
     wrapper.plot_minutiae(im_tensor, out, save_path='minutiae_detection.png')
 
-def test3(patch_size: int = 64):
+def test3(patch_size: int = 800):
     model = FingerNet()
     model.load_state_dict(torch.load(_MODEL_PATH, map_location='cpu'))
     model.eval()

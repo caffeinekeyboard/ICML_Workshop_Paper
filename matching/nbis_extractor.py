@@ -40,6 +40,8 @@ class Nbis(nn.Module):
         for img in batch:
             img = img.squeeze(0).detach().cpu()
             if img.dtype != torch.uint8:
+                if img.min() < 0:
+                    img = img * 0.5 + 0.5
                 img = (img.clamp(0, 1) * 255).to(torch.uint8)
             img_np = img.contiguous().numpy()
             pil_img = Image.fromarray(img_np, mode="L")
