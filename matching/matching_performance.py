@@ -24,7 +24,7 @@ def compute_far_frr(score_matrix: torch.Tensor, threshold: float) -> Tuple[float
     
     return far, frr
 
-def fcv_frr(score_matrix: torch.Tensor, threshold: float = 0.5) -> torch.Tensor:
+def fcv_frr(score_matrix: torch.Tensor, threshold: float = 0.54) -> torch.Tensor:
     """Compute the FCV competition specific FRR for a given threshold.
     
     Args:

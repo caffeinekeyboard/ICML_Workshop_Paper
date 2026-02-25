@@ -29,7 +29,7 @@ _IMAGE_PATH = os.path.abspath(
         'FVC2004',
         'Dbs',
         'DB1_A',
-        '1_1.tif',
+        '39_1.tif',
     )
 )
 
@@ -61,7 +61,7 @@ def _load_single_image_tensor() -> "torch.Tensor":
 
     im = Image.open(_IMAGE_PATH).convert("L")
     im_tensor = _TRANSFORM(im).unsqueeze(0) # type: ignore
-    im_tesnor_gumnet = _TRANSFORM_GUMNET(im).unsqueeze(0) # type: ignore
+    im_tensor_gumnet = _TRANSFORM_GUMNET(im).unsqueeze(0) # type: ignore
     #im_tensor = crop_resize_horizontal(im_tensor, output_size=(640, 480))
 
     model = GumNet(grid_size=8)
@@ -70,7 +70,7 @@ def _load_single_image_tensor() -> "torch.Tensor":
     model.to(device)
     model.eval()
 
-    _, control_points = model(im_tesnor_gumnet.to(device), im_tesnor_gumnet.to(device)) # type: ignore
+    wi, control_points = model(im_tensor_gumnet.to(device), im_tensor_gumnet.to(device)) # type: ignore
     
     dense_flow = F.interpolate(
             control_points, 

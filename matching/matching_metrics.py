@@ -214,5 +214,5 @@ def hybrid_metric(warped_impression, reference_image, warped_features, reference
     
     cosine_score = cosine_similarity_metric([warped_impression], [reference_image])
     
-    combined_score = alpha * minutiae_score + beta * orientation_score #+ delta * cosine_score
+    combined_score = alpha * minutiae_score + beta * orientation_score + delta * cosine_score
     return combined_score

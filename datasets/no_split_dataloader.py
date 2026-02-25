@@ -18,7 +18,7 @@ class FingerprintGumNetNoSplitDataset(Dataset):
         self.root_dir = Path(root_dir)
         self.transform = transforms.Compose([
             transforms.Grayscale(num_output_channels=1),
-            transforms.Pad(padding=(62, 0, 63, 0), fill=255),
+            transforms.Pad(padding=(80, 0, 80, 0), fill=255),
             transforms.Resize((192, 192)),
             transforms.RandomInvert(p=1.0),
             transforms.ToTensor(),
