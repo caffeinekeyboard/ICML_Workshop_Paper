@@ -7,3 +7,4 @@ fingernet.pth
 gumnet_2d_best_noise_level_0_8x8_200.pth
 intermediates_batch_*.pt
 __pycache__/
+/visualizations
