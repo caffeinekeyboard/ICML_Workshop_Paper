@@ -87,7 +87,7 @@ Effective mitigation of elastic torque and non-linear stretching, enabling subst
 ### 🔬 DCT Spectral Pooling: Why It Matters
 
 <div align=\"center\">
-<img src=\"assets/dct_viz.png\" alt=\"DCT Spectral Pooling Comparison\" width=\"90%\"/>
+<img src=\"assets/dct_viz.png" alt=\"DCT Spectral Pooling Comparison\" width=\"90%\"/>
 
 <sub><b>Figure 2.</b> Comparison of pooling methods across subsampling factors (1:1 → 16:16). DCT spectral pooling preserves ridge structure and fine details significantly better than max or average pooling at aggressive downsampling rates—critical for maintaining discriminative fingerprint features.</sub>
 </div>
