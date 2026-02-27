@@ -2,12 +2,6 @@
 
 ### Unsupervised Dense Deformation Grid Prediction for Elastic Fingerprint Alignment
 
-<p align=\"center\">
-  <a href=\"https://cvpr.thecvf.com/\"><img src=\"https://img.shields.io/badge/CVPR-2026-blue?style=for-the-badge\" alt=\"CVPR 2026\"></a>
-  <a href=\"#\"><img src=\"https://img.shields.io/badge/PyTorch-2.0+-ee4c2c?style=for-the-badge&logo=pytorch&logoColor=white\" alt=\"PyTorch\"></a>
-  <a href=\"#license\"><img src=\"https://img.shields.io/badge/License-MIT-green?style=for-the-badge\" alt=\"License\"></a>
-  <a href=\"#\"><img src=\"https://img.shields.io/badge/Python-3.9+-3776ab?style=for-the-badge&logo=python&logoColor=white\" alt=\"Python\"></a>
-</p>
 
 <p align=\"center\">
   <a href=\"#-overview\">Overview</a> •
@@ -34,7 +28,7 @@
 
 ---
 
-## 🎯 Overview
+## Overview
 
 > *\"The fundamental challenge in fingerprint recognition isn't matching—it's alignment.\"*
 
@@ -47,7 +41,7 @@ Elastic skin deformation during capture introduces **non-linear distortions** th
 
 <br>
 
-## ✨ Key Contributions
+## Key Contributions
 
 <table>
 <tr>
@@ -76,35 +70,8 @@ Effective mitigation of elastic torque and non-linear stretching, enabling subst
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
-### Pipeline Overview
-
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           2D Gum-Net Framework                              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│   ┌──────────┐      ┌──────────────────┐      ┌───────────────────────┐    │
-│   │ Template │─────▶│                  │      │                       │    │
-│   │   Sₐ     │      │     Feature      │─────▶│   Siamese Matching    │    │
-│   └──────────┘      │    Extraction    │      │                       │    │
-│                     │   + DCT Pooling  │      │  • Correlation Maps   │    │
-│   ┌──────────┐      │                  │─────▶│  • Cₐᵦ, Cᵦₐ          │    │
-│   │Impression│─────▶│                  │      │                       │    │
-│   │   Sᵦ     │      └──────────────────┘      └───────────┬───────────┘    │
-│   └──────────┘                                            │                │
-│                                                           ▼                │
-│                                              ┌───────────────────────┐     │
-│   ┌──────────┐      ┌──────────────────┐     │  Dense Spatial        │     │
-│   │ Aligned  │◀─────│  Deformation     │◀────│  Transformer (DST)    │     │
-│   │   Sᵦ'    │      │  Field Φ        │     │                       │     │
-│   └──────────┘      └──────────────────┘     │  • Control Points     │     │
-│                                              │  • Bicubic Interp.    │     │
-│                                              └───────────────────────┘     │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
 
 ### Module Details
 
@@ -161,7 +128,7 @@ $$\mathcal{L}_{	ext{total}} = \mathcal{L}_{	ext{dice}} + \lambda \cdot \mathcal{
 
 ---
 
-## 📊 Results
+## Results
 
 ### Alignment Performance
 
@@ -191,7 +158,7 @@ Our method demonstrates robust alignment across diverse conditions:
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -263,7 +230,7 @@ python evaluate.py \
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 2d-gumnet/
@@ -295,7 +262,7 @@ python evaluate.py \
 
 ---
 
-## 📦 Dataset
+## Dataset
 
 We utilize synthetic fingerprints generated with the **Anguli** fingerprint generator:
 
@@ -309,23 +276,33 @@ We utilize synthetic fingerprints generated with the **Anguli** fingerprint gene
 <br>
 
 ---
+## Important Links:
 
-## 📅 Release Timeline
+- [ICML New In ML Affinity Event](https://newinml.github.io/NewInML2025ICML/)
+- [Gum-Net Paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Zeng_Gum-Net_Unsupervised_Geometric_Matching_for_Fast_and_Accurate_3D_Subtomogram_CVPR_2020_paper.pdf)
+- [Gum-Net Supplemental](https://openaccess.thecvf.com/content_CVPR_2020/supplemental/Zeng_Gum-Net_Unsupervised_Geometric_CVPR_2020_supplemental.pdf#page=3.00)
+- [Google Drive](https://drive.google.com/drive/folders/1iDYChJ-Ee0wIsDdZsaEcUtGYgJdXz5y2)
+- [Current Gold Standard Fingerprint Matching Methods](https://docs.google.com/spreadsheets/d/1cSLaRhZ0j-iSGLZHZiXBqevQrt3hOLhBJd39syqC32s/edit?usp=sharing)
+- [Dates and Deadlines](https://icml.cc/Conferences/2026/Dates) 
+- [A Curated List of Fingerprint Datasets.](https://github.com/robertvazan/fingerprint-datasets)
+
+
+## Release Timeline
 
 | Asset | Status | Expected |
 |:------|:------:|:---------|
-| 📄 Paper | ✅ Submitted | CVPR 2026 |
-| 💻 Training Code | ⏳ Pending | Upon Acceptance |
-| 💻 Evaluation Code | ⏳ Pending | Upon Acceptance |
-| 🔧 Pre-trained Weights | ⏳ Pending | Camera-Ready |
-| 📊 Synthetic Dataset | ⏳ Pending | Upon Acceptance |
-| 🎮 Demo | ⏳ Pending | Camera-Ready |
+| Paper | ✅ Submitted | CVPR 2026 |
+| Training Code | ⏳ Pending | Upon Acceptance |
+| Evaluation Code | ⏳ Pending | Upon Acceptance |
+| Pre-trained Weights | ⏳ Pending | Camera-Ready |
+| Synthetic Dataset | ⏳ Pending | Upon Acceptance |
+| Demo | ⏳ Pending | Camera-Ready |
 
 <br>
 
 ---
 
-## 📚 Citation
+## Citation
 
 If you find this work useful in your research, please consider citing:
 
@@ -370,16 +347,6 @@ This project is released under the [MIT License](LICENSE).
 
 <br>
 
-⭐ **Star this repository if you find it helpful!** ⭐
 
 </div>
 "
-## Important Links:
-
-- [ICML New In ML Affinity Event](https://newinml.github.io/NewInML2025ICML/)
-- [Gum-Net Paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Zeng_Gum-Net_Unsupervised_Geometric_Matching_for_Fast_and_Accurate_3D_Subtomogram_CVPR_2020_paper.pdf)
-- [Gum-Net Supplemental](https://openaccess.thecvf.com/content_CVPR_2020/supplemental/Zeng_Gum-Net_Unsupervised_Geometric_CVPR_2020_supplemental.pdf#page=3.00)
-- [Google Drive](https://drive.google.com/drive/folders/1iDYChJ-Ee0wIsDdZsaEcUtGYgJdXz5y2)
-- [Current Gold Standard Fingerprint Matching Methods](https://docs.google.com/spreadsheets/d/1cSLaRhZ0j-iSGLZHZiXBqevQrt3hOLhBJd39syqC32s/edit?usp=sharing)
-- [Dates and Deadlines](https://icml.cc/Conferences/2026/Dates) 
-- [A Curated List of Fingerprint Datasets.](https://github.com/robertvazan/fingerprint-datasets)
