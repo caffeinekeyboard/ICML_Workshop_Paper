@@ -17,7 +17,7 @@ class SeqDatasetEval(Dataset):
         self.root_dir = Path(root_dir)
         self.transform = transforms.Compose([
             transforms.Grayscale(num_output_channels=1),
-            transforms.Pad(padding=(0, 80, 0, 80), fill=255),
+            transforms.Pad(padding=(-200, -120, -200, -120), fill=255),
             transforms.Resize((192, 192)),
             transforms.RandomInvert(p=1.0),
             transforms.ToTensor(),
@@ -41,14 +41,17 @@ class SeqDatasetEval(Dataset):
         img_Sa = Image.open(img_path_Sa).convert("L")
         Sa_tensor = self.transform(img_Sa)
 
+        img_path_Sb = self.paths[idx+1]
+        img_Sb = Image.open(img_path_Sb).convert("L")
+        Sb_tensor = self.transform(img_Sb)
+
         return {
             "Sa": Sa_tensor,
-            "Sb": Sa_tensor,
+            "Sb": Sb_tensor,
         }
 
     def __len__(self) -> int:
-        return len(self.paths)
-
+        return len(self.paths) - 1
 
 def get_seq_eval_dataloader(
     data_root: str,

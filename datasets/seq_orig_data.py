@@ -17,7 +17,7 @@ class SeqDatasetOrig(Dataset):
         self.root_dir = Path(root_dir)
         self.transform = transforms.Compose([
             transforms.Grayscale(num_output_channels=1),
-            transforms.Pad(padding=(0, 80, 0, 80), fill=255),
+            transforms.Pad(padding=(-200, -120, -200, -120), fill=255),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.5], std=[0.5])
         ])
