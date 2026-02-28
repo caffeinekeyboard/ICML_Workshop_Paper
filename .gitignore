@@ -5,6 +5,8 @@ deprecated_model.zip
 /checkpoints
 fingernet.pth
 gumnet_2d_best_noise_level_0_8x8_200.pth.zip
+/model/alternate/gumnetap_2d_best_noise_level_0_8x8_200.pth.zip
+/model/alternate/gumnetmp_2d_best_noise_level_0_8x8_200.pth.zip
 /model/gumnet_2d_best
 intermediates_batch_*.pt
 /visualizations
