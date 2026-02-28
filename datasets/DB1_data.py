@@ -8,7 +8,7 @@ import torchvision.transforms as transforms
 class SetDatasetEval(Dataset):
     """
     Dataset that loads all impressions without train/val/test split.
-    Pairs each sample (Sb) with the other remaining samples (Sa).
+    Pairs each sample (Sa) with the other remaining samples (Sb).
     """
     def __init__(
         self,
@@ -67,10 +67,6 @@ class SetDatasetEval(Dataset):
         }
 
 class SetDatasetOrig(Dataset):
-    """
-    Dataset that loads all impressions without train/val/test split.
-    Pairs each sample (Sb) with the other remaining samples (Sa).
-    """
     def __init__(
         self,
         root_dir: str,
