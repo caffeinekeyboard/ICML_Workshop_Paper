@@ -12,9 +12,19 @@ from model.losses.pearson_correlation_loss import PearsonCorrelationLoss
 """
 This script evaluates the performance of the GUMNet model on the FVC2004 dataset and the our custom Kaggle dataset.
 As alignment measure we use the Pearson Correlation Coefficient (PCC) between the template and the (warped) impression.
-"""
 
-# 0) helper functions
+Provide data paths to the datasets (e.g. in data/):
+For FVC2004 only the whole database needs to be added. For the Kaggle dataset, the impressions and the template finger are
+provided separately.
+
+The datapaths to the specific model checkpoints can be set in init_gumnet.py, init_gumnet_ap.py and init_gumnet_mp.py.
+"""
+# 0) dataset paths
+fvc_path = "data/FVC/FVC2004/Dbs/DB1_A"
+kaggle_impressions_path = "data/Kaggle/data/5x5000/Finger_1"
+kaggle_template_path = "data/Kaggle/data/5x5000/Master_Templates/1.png"
+
+# 00) helper functions
 def plot_side_by_side(image_left, image_middle, image_right, title_left="Template", title_middle="Impression", title_right="Warped"):
     fig, axes = plt.subplots(1, 3, figsize=(8, 4))
     axes[0].imshow(image_left, cmap="gray")
@@ -45,20 +55,20 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
 # 2) init models
-model = init_gumnetmp(device=device)
+model = init_gumnet(device=device)
 model.to(device)
 model.eval()
 
 # 3) init dataloaders
-loader1 = get_set_eval_dataloader(
-    data_root="data/FVC/FVC2004/Dbs/DB1_A",
+FVC_loader = get_set_eval_dataloader(
+    data_root=fvc_path,
     batch_size=64,
     num_workers=0,
     num_images=100*8, # Be aware: Set A databases contain 100*8 images, set B databases only 10*8
 )
-loader2 = get_eval_dataloader(
-    data_root="data/Kaggle/data/5x5000/Finger_1",
-    batch_size=20,
+Kaggle_loader = get_eval_dataloader(
+    data_root=kaggle_impressions_path,
+    batch_size=100,
     num_workers=0,
 )
 
@@ -77,15 +87,12 @@ template_transform = transforms.Compose([
     transforms.Normalize(mean=[0.5], std=[0.5]),
 ])
 
-template_path = (
-    "/home/marius/Asus/CVPR_Workshop/ICML_Workshop_Paper/"
-    "data/Kaggle/data/5x5000/Master_Templates/1.png"
-)
+template_path = kaggle_template_path
 template_image = Image.open(template_path).convert("L")
 template_tensor: torch.Tensor = template_transform(template_image) # type: ignore
-template = template_tensor.unsqueeze(0).repeat(20, 1, 1, 1)[:20] # Set this to the same batch size as the Kaggle dataloader
+template = template_tensor.unsqueeze(0).repeat(100, 1, 1, 1)[:100] # Set this to the same batch size as the Kaggle dataloader
 
-for idx, batch in enumerate(loader1):
+for idx, batch in enumerate(FVC_loader):
     #Sa = template.to(device) # Uncomment to use the Kaggle template
     Sa = batch["Sa"].to(device)
     Sb = batch["Sb"].to(device)
