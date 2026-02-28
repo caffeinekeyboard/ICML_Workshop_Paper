@@ -19,7 +19,7 @@ provided separately.
 
 The datapaths to the specific model checkpoints can be set in init_gumnet.py, init_gumnet_ap.py and init_gumnet_mp.py.
 """
-# 0) dataset paths
+# 0) dataset paths (needs to be adjusted)
 fvc_path = "data/FVC/FVC2004/Dbs/DB1_A"
 kaggle_impressions_path = "data/Kaggle/data/5x5000/Finger_1"
 kaggle_template_path = "data/Kaggle/data/5x5000/Master_Templates/1.png"
