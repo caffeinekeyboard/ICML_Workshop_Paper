@@ -163,38 +163,6 @@ Our method demonstrates robust alignment across diverse conditions:
 
 ---
 
-## Repository Structure
-
-```
-2d-gumnet/
-├── configs/                  # Training configurations
-│   ├── synthetic.yaml
-│   └── custom.yaml
-├── gumnet/                   # Core library
-│   ├── __init__.py
-│   ├── model.py              # GumNet2D architecture
-│   ├── modules/
-│   │   ├── feature_extractor.py
-│   │   ├── siamese_matching.py
-│   │   ├── spatial_transformer.py
-│   │   └── dct_pooling.py    # DCT spectral pooling
-│   ├── losses.py             # Loss functions
-│   └── utils.py              # Utilities
-├── scripts/
-│   ├── train.py              # Training script
-│   ├── evaluate.py           # Evaluation script
-│   └── visualize.py          # Visualization tools
-├── data/                     # Dataset directory
-├── checkpoints/              # Model weights
-├── assets/                   # README assets
-├── requirements.txt
-└── README.md
-```
-
-<br>
-
----
-
 ## Dataset
 
 We utilize synthetic fingerprints generated with the **Anguli** fingerprint generator:
