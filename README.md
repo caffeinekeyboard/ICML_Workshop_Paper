@@ -143,7 +143,7 @@ python train.py --data_root ./data --save_dir ./checkpoints --batch_size 16 --ep
 
 ## Results
 Please view:
-- `downstream_matching.ipynb` to see how Gum-Net excels in fingerprint matching on our own synthetic dataset, introducing an *increase in the Bozorth3 score by 11.1%*.
+- `downstream_matching.ipynb` to see how Gum-Net excels in fingerprint matching on our own synthetic dataset, introducing an **increase in the Bozorth3 score by 11.1%**.
 - `downstream_matching_tsinghua.ipynb` to see how Gum-Net excels in fingerprint matching on the **Tsinghua Distorted Fingerprints** dataset, introducing **increase in the Bozorth3 score by 7.5%**.
 -  `pearson_corelation_evaluation.ipynb` to see how Gum-Net performs in the fingerprint alignment tasks on the **FVC2004** dataset, **increasing the pearson correlation score by an average of 12.8%**.
 ### Alignment Performance
